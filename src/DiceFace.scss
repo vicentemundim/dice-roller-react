@@ -1,0 +1,72 @@
+@import "./DiceVariables.scss";
+
+$faceWidth:  $containerWidth*0.5;
+$faceHeight: $faceWidth*0.86;
+
+$horizontalMargin: -$faceWidth*0.5;
+
+$opacity: 0.75;
+$color: rgba(30, 180, 20, $opacity);
+
+$translateZ: $faceWidth*0.335;
+$translateY: -$faceHeight*0.15;
+$translateRingZ: $faceWidth*0.75;
+$translateRingY: $faceHeight*0.78 + $translateY;
+$translateLowerZ: $translateZ;
+$translateLowerY: $faceHeight*0.78 + $translateRingY;
+
+.diceFace {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  margin: 0 $horizontalMargin;
+  border-left: $faceWidth*0.5 solid transparent;
+  border-right: $faceWidth*0.5 solid transparent;
+  border-bottom: $faceHeight solid $color;
+  width: 0px;
+  height: 0px;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+
+  &:before {
+    content: attr(data-value);
+    position: absolute;
+    top: $faceHeight*0.25;
+    left: -$faceWidth;
+    color: #fff;
+    text-shadow: 1px 1px 3px #000;
+    font-size: $faceHeight*0.5;
+    text-align: center;
+    line-height: $faceHeight*0.9;
+    width: $faceWidth*2;
+    height: $faceHeight;
+  }
+
+  @for $i from 1 through 5 {
+    &.diceFace#{$i} {
+      $angleMultiplier: $i - 1;
+      transform: rotateY(-$sideAngle * $angleMultiplier) translateZ($translateZ) translateY($translateY) rotateX($angle);
+    }
+  }
+
+  @for $i from 16 through 20 {
+    &.diceFace#{$i} {
+      $angleMultiplier: $i - 18;
+      transform: rotateY($sideAngle * $angleMultiplier + $sideAngle/2) translateZ($translateLowerZ) translateY($translateLowerY) rotateZ(180deg) rotateX($angle);
+    }
+  }
+
+  @for $i from 6 through 10 {
+    &.diceFace#{$i} {
+      $angleMultiplier: $i - 11;
+      transform: rotateY(-$sideAngle * $angleMultiplier) translateZ($translateRingZ) translateY($translateRingY) rotateZ(180deg) rotateX($ringAngle);
+    }
+  }
+
+  @for $i from 11 through 15 {
+    &.diceFace#{$i} {
+      $angleMultiplier: $i - 8;
+      transform: rotateY($sideAngle * $angleMultiplier + $sideAngle/2) translateZ($translateRingZ) translateY($translateRingY) rotateX($ringAngle);
+    }
+  }
+}
